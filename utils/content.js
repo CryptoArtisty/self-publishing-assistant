@@ -1,33 +1,32 @@
-import { RateLimiter } from './utils/rateLimiter.js';
+// content.js
+// (RateLimiter already loaded via manifest.json order)
 
-const pageLimiter = new RateLimiter(1, 1000); // 1 scrape/sec
+const pageLimiter = new RateLimiter(1, 1000);
 
 (async () => {
   await pageLimiter.removeToken();
-  // TOS disclaimer in console
   console.warn(
-    'Reminder: Only publicly visible data is scraped. '
-    + 'Ensure compliance with Amazon Terms of Service.'
+    'TOS reminder: Only publicly visible data is scraped.'
   );
-  
-  // 1. JSON-LD
+
+  // JSON-LD
   const ld = document.querySelector('script[type="application/ld+json"]');
   const bookData = ld ? JSON.parse(ld.textContent) : {};
 
-  // 2. Meta Keywords
+  // Meta keywords
   const metaKW = document.querySelector('meta[name="keywords"]');
-  const backendKeywords = metaKW 
-    ? metaKW.content.split(',').map(s => s.trim()) 
+  const backendKeywords = metaKW
+    ? metaKW.content.split(',').map(s=>s.trim())
     : [];
 
-  // 3. BSR
+  // BSR
   const bsrEl = [...document.querySelectorAll('#detailBulletsWrapper li')]
     .find(li => li.textContent.includes('Best Sellers Rank'));
-  const bsr = bsrEl 
-    ? bsrEl.querySelector('span.a-text-bold').nextSibling.textContent.trim() 
+  const bsr = bsrEl
+    ? bsrEl.querySelector('span.a-text-bold').nextSibling.textContent.trim()
     : null;
 
-  // 4. Price & Reviews
+  // Price & Reviews
   const price   = document.querySelector('.a-price .a-offscreen')?.textContent;
   const rating  = document.querySelector('span.a-icon-alt')?.textContent;
   const reviews = document.querySelector('#acrCustomerReviewText')?.textContent;
