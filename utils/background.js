@@ -1,7 +1,8 @@
-import { RateLimiter } from './utils/rateLimiter.js';
+// background.js
+importScripts('utils/rateLimiter.js');
 
-const autosuggestLimiter = new RateLimiter(5, 1000);  // 5 req/sec
-const fetchLimiter      = new RateLimiter(2, 500);   // 2 req/0.5s
+const autosuggestLimiter = new RateLimiter(5, 1000);
+const fetchLimiter      = new RateLimiter(2, 500);
 
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.type === 'FETCH_AUTOSUGGEST') {
@@ -11,9 +12,9 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         .then(data => sendResponse({ success: true, data }))
         .catch(err => sendResponse({ success: false, error: err }));
     });
-    return true;  // async
+    return true;
   }
   if (msg.type === 'EXPORT_CSV') {
-    // Use SheetJS (xlsx) to build and trigger download
+    // …your export logic…
   }
 });
