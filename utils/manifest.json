@@ -2,23 +2,19 @@
   "manifest_version": 3,
   "name": "Self-Publish Quick View",
   "version": "1.1",
-  "permissions": [
-    "storage","scripting","activeTab","downloads"
-  ],
-  "host_permissions": [
-    "*://*.amazon.com/*"
-  ],
+  "description": "Scrape KDP metadata & backend keywords with rate limiting",
+  "permissions": ["storage", "scripting", "activeTab", "downloads"],
+  "host_permissions": ["*://*.amazon.com/*"],
   "background": {
     "service_worker": "background.js"
   },
-  "action": { "default_popup": "popup.html" },
+  "action": {
+    "default_popup": "popup.html"
+  },
   "options_page": "options.html",
   "content_scripts": [{
     "matches": ["*://*.amazon.com/s?k=*", "*://*.amazon.com/dp/*"],
-    "js": [
-      "utils/rateLimiter.js",
-      "content.js"
-    ],
+    "js": ["utils/rateLimiter.js", "content.js"],
     "run_at": "document_idle"
   }],
   "web_accessible_resources": [{
